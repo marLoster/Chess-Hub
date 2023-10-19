@@ -8,7 +8,7 @@ class Chess:
     def __init__(self):
         self.board = [[Piece("empty") for _ in range(8)] for _ in range(8)]
         self.en_passant = []
-        self.turn = 0
+        self.turn = 1
         self.curr_piece = None
         self.status = "going"
 

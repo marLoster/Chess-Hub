@@ -49,7 +49,7 @@ def draw_game(game: Chess):
                 place_piece(game.board[row][col].to_unicode(),
                             row,
                             col,
-                            "black" if game.board[row][col].color else "white")
+                            "white" if game.board[row][col].color else "black")
 
 
 piece_dropdown = tk.StringVar(root)
