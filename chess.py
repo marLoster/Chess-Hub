@@ -10,6 +10,7 @@ class Chess:
         self.en_passant = []
         self.turn = 0
         self.curr_piece = None
+        self.status = "going"
 
     def place_piece(self, piece, square):
         self.board[Chess.get_cords(square)[0]][Chess.get_cords(square)[1]] = piece
@@ -51,8 +52,8 @@ class Chess:
         self.place_piece(Piece("pawn", 1), "g2")
         self.place_piece(Piece("pawn", 1), "h2")
 
-    def move_piece(self, row, col, new_row, new_col):
-        print(f"attempted move: {new_row}, {new_col}")
+    def move_piece(self, row, col, new_row, new_col, update_status=False):
+        #print(f"attempted move: {new_row}, {new_col}")
         if abs(col-new_col) == 2 and self.board[row][col].piece == "king":
             if new_col > col:
                 self.board[row][(col+new_col)//2] = self.board[row][7]
@@ -76,6 +77,21 @@ class Chess:
         else:
             self.en_passant = False
 
+        if update_status:
+
+            self.turn = 1 - self.turn
+
+            print(self.get_moves_figs(self.turn))
+            moves = map(lambda x: x[1], self.get_moves_figs(self.turn))
+            combined_moves = reduce(lambda moves_list_a, moves_list_b: moves_list_a + moves_list_b, moves)
+            if len(combined_moves) == 0:
+                own_pieces = self.locate_pieces(self.turn)
+                king = next(filter(lambda x: x[0].piece == "king", own_pieces))[1]
+                if king in self.get_all_moves(1 - self.turn):
+                    self.status = 1 - self.turn
+                else:
+                    self.status = -1
+
 
     def locate_pieces(self, color):
         pieces_locations = []
@@ -93,7 +109,7 @@ class Chess:
         king = next(filter(lambda x: x[0].piece == "king", own_pieces))[1]
         moves = []
 
-        print(f"{'' if check_pins else '    '}getting moves for {piece.piece} on ({row},{col})")
+        #print(f"{'' if check_pins else '    '}getting moves for {piece.piece} on ({row},{col})")
 
         match piece.piece:
 
@@ -109,14 +125,14 @@ class Chess:
 
                 for offset_row in (-1, 0, 1):
                     for offset_col in (-1, 0, 1):
-                        print(f'checking {offset_row}, {offset_col}')
+                        #print(f'checking {offset_row}, {offset_col}')
                         if offset_col or offset_row:
-                            print('actual move')
+                            #print('actual move')
                             try:
                                 if (row+offset_row < 0 or col+offset_col < 0 or
                                         self.board[row+offset_row][col+offset_col].color == piece.color):
                                     #or (row+offset_row, col+offset_col) in danger_points):
-                                    print('failed first check')
+                                    #print('failed first check')
                                     continue
                                 else:
                                     game_copy = self.copy_game()
@@ -131,12 +147,12 @@ class Chess:
                                     danger_points_curr = reduce(
                                         lambda moves_list_a, moves_list_b: moves_list_a + moves_list_b,
                                         danger_points_curr)
-                                    print(danger_points_curr)
+                                   # print(danger_points_curr)
                                     if (row+offset_row, col+offset_col) not in danger_points_curr:
                                         moves.append((row+offset_row, col+offset_col))
-                                    print('move puts king in danger')
+                                    #print('move puts king in danger')
                             except IndexError:
-                                print('index error')
+                                #print('index error')
                                 continue
 
                 if (row == 0 and piece.color == 0) or (row == 7 and piece.color == 1):
@@ -544,9 +560,9 @@ class Chess:
         return moves
 
     def get_moves_figs(self, color):
-        print(f'getting all the moves for color: {color}')
+        #print(f'getting all the moves for color: {color}')
         pieces = self.locate_pieces(color)
-        print(f'player {color} locations: {pieces}')
+        #print(f'player {color} locations: {pieces}')
         moves = list(map(lambda piece: (piece, self.get_moves(piece[1][0], piece[1][1])), pieces))
         return moves
 

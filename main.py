@@ -62,6 +62,10 @@ move_dropdown.set("...")  # Default move
 move_menu = tk.OptionMenu(control_frame, move_dropdown, "...")
 move_menu.grid(row=2, column=0, padx=5, pady=5)
 
+status_label = tk.Label(root, text="Game is ready")
+status_label.grid(row=0, column=3, padx=5, pady=5)
+
+
 # Function to handle the "Place Piece" button click
 def fun_piece_button():
     piece = piece_dropdown.get()
@@ -78,18 +82,27 @@ def fun_piece_button():
 # Function to handle the "Move Piece" button click
 def fun_move_button():
     move = move_dropdown.get()
-    game.move_piece(*game.curr_piece, *Chess.get_cords(move))
+    game.move_piece(*game.curr_piece, *Chess.get_cords(move), update_status=True)
     piece_button["state"] = "normal"
     move_button["state"] = "disabled"
     move_menu["state"] = "disabled"
-    game.turn = 1 - game.turn
-    moves_figs = list(filter(lambda x: len(x[1]), game.get_moves_figs(game.turn)))
-    figs = list(map(lambda x: x[0][0].to_unicode() + " " + Chess.get_notation(x[0][1]), moves_figs))
-    print(figs)
-    piece_menu = tk.OptionMenu(control_frame, piece_dropdown, *figs)
-    piece_menu.grid(row=0, column=0, padx=5, pady=5)
-    piece_menu["state"] = "normal"
+    # game.turn = 1 - game.turn
     draw_game(game)
+    if isinstance(game.status, str):
+        print("str", game.status)
+        status_label.config( text=f"Player {game.turn} plays now")
+        moves_figs = list(filter(lambda x: len(x[1]), game.get_moves_figs(game.turn)))
+        figs = list(map(lambda x: x[0][0].to_unicode() + " " + Chess.get_notation(x[0][1]), moves_figs))
+        print(figs)
+        piece_menu = tk.OptionMenu(control_frame, piece_dropdown, *figs)
+        piece_menu.grid(row=0, column=0, padx=5, pady=5)
+        piece_menu["state"] = "normal"
+    else:
+        print("non str", game.status)
+        if game.status == -1:
+            status_label.config( text=f"Draw")
+        else:
+            status_label.config(text=f"Player {game.status} wins")
 
 def clear_board():
     piece_button["state"] = "disabled"
