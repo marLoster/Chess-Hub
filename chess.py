@@ -179,7 +179,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, col))
                     if self.board[new_row][col].color == 1 - piece.color:
@@ -193,7 +193,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, col))
                     if self.board[new_row][col].color == 1 - piece.color:
@@ -207,7 +207,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((row, new_col))
                     if self.board[row][new_col].color == 1 - piece.color:
@@ -221,7 +221,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((row, new_col))
                     if self.board[row][new_col].color == 1 - piece.color:
@@ -242,7 +242,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -261,7 +261,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -280,7 +280,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -299,7 +299,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -315,7 +315,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, col))
                     if self.board[new_row][col].color == 1 - piece.color:
@@ -329,7 +329,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, col))
                     if self.board[new_row][col].color == 1 - piece.color:
@@ -343,7 +343,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((row, new_col))
                     if self.board[row][new_col].color == 1 - piece.color:
@@ -357,7 +357,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((row, new_col))
                     if self.board[row][new_col].color == 1 - piece.color:
@@ -377,7 +377,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -396,7 +396,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -415,7 +415,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -434,7 +434,7 @@ class Chess:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, new_row, new_col)
                         if king in game_copy.get_all_moves(1 - piece.color):
-                            break
+                            continue
 
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
@@ -555,7 +555,7 @@ class Chess:
     def get_all_moves(self, color):
         pieces = self.locate_pieces(color)
         moves = list(map(lambda piece: self.get_moves(piece[1][0], piece[1][1], check_pins=False), pieces))
-        #print(moves)
+        print("get_all_moves", moves)
         moves = reduce(lambda moves_list_a, moves_list_b: moves_list_a+moves_list_b, moves)
         return moves
 
