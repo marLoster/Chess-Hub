@@ -15,8 +15,18 @@ def extract_start_square(move_str):
 
 
 
+#with open("games.pgn") as file:
+#    lines = enumerate(file.readlines())
+
+#lines = list(filter(lambda x: x[1][0] == "1", lines))
+
 with open("games.pgn") as file:
-    lines = enumerate(file.readlines())
+    read_lines = file.readlines()
+    lines_index = read_lines.index("<start>\n")
+    lines = read_lines[lines_index:]
+    print(len(lines))
+    lines = enumerate(lines)
+
 
 lines = list(filter(lambda x: x[1][0] == "1", lines))
 
@@ -40,6 +50,7 @@ for game_num, game in lines:
             'K': 'king',
         }
         possible_moves = chess.get_moves_figs(chess.turn)
+        move = move.replace("=Q", "")
         # print(possible_moves)
         if move[0] in piece_map:
             piece = piece_map[move[0]]
@@ -64,25 +75,41 @@ for game_num, game in lines:
             print(fig_location)
             for fig in fig_location:
                 if target in fig[1]:
-                    chess.move_piece(*fig[0][1], *target, update_status=True)
-                    break
+                    if chess.is_move_valid(*fig[0][1], *target):
+                        chess.move_piece(*fig[0][1], *target, update_status=True)
+                        break
+                    else:
+                        raise Exception(f"Validation Failed: Matching {piece} move not found, move: {move}, game_id: {game_num}")
             else:
                 raise Exception(f"Matching {piece} move not found, move: {move}, game_id: {game_num}")
 
         elif move.startswith("O"):
             fig_location = list(filter(lambda x:  x[0][0].piece == "king", possible_moves))
             if chess.turn:
-                if len(move) == 3 and chess.get_cords("g1") in fig_location[0][1]:
-                    chess.move_piece(*chess.get_cords("e1"), *chess.get_cords("g1"), update_status=True)
-                elif len(move) == 5 and chess.get_cords("c1") in fig_location[0][1]:
-                    chess.move_piece(*chess.get_cords("e1"), *chess.get_cords("c1"), update_status=True)
+                if move.count("O") == 2 and chess.get_cords("g1") in fig_location[0][1]:
+                    if chess.is_move_valid(*chess.get_cords("e1"), *chess.get_cords("g1")):
+                        chess.move_piece(*chess.get_cords("e1"), *chess.get_cords("g1"), update_status=True)
+                    else:
+                        raise Exception(f"Validation failed: Matching move not found, move: {move}, game_id: {game_num}")
+
+                elif move.count("O") == 3 and chess.get_cords("c1") in fig_location[0][1]:
+                    if chess.is_move_valid(*chess.get_cords("e1"), *chess.get_cords("c1")):
+                        chess.move_piece(*chess.get_cords("e1"), *chess.get_cords("c1"), update_status=True)
+                    else:
+                        raise Exception(f"Validation failed: Matching move not found, move: {move}, game_id: {game_num}")
                 else:
                     raise Exception(f"Matching move not found, move: {move}, game_id: {game_num}")
             else:
-                if len(move) == 3 and chess.get_cords("g8") in fig_location[0][1]:
-                    chess.move_piece(*chess.get_cords("e8"), *chess.get_cords("g8"), update_status=True)
-                elif len(move) == 5 and chess.get_cords("c8") in fig_location[0][1]:
-                    chess.move_piece(*chess.get_cords("e8"), *chess.get_cords("c8"), update_status=True)
+                if move.count("O") == 2 and chess.get_cords("g8") in fig_location[0][1]:
+                    if chess.is_move_valid(*chess.get_cords("e8"), *chess.get_cords("g8")):
+                        chess.move_piece(*chess.get_cords("e8"), *chess.get_cords("g8"), update_status=True)
+                    else:
+                        raise Exception(f"Validation failed: Matching move not found, move: {move}, game_id: {game_num}")
+                elif move.count("O") == 3 and chess.get_cords("c8") in fig_location[0][1]:
+                    if chess.is_move_valid(*chess.get_cords("e8"), *chess.get_cords("c8")):
+                        chess.move_piece(*chess.get_cords("e8"), *chess.get_cords("c8"), update_status=True)
+                    else:
+                        raise Exception(f"Validation failed: Matching move not found, move: {move}, game_id: {game_num}")
                 else:
                     raise Exception(f"Matching move not found, move: {move}, game_id: {game_num}")
 
@@ -93,20 +120,29 @@ for game_num, game in lines:
                 target = Chess.get_cords(move)
                 for fig in fig_location:
                     if target in fig[1]:
-                        chess.move_piece(*fig[0][1], *target, update_status=True)
-                        break
+                        if chess.is_move_valid(*fig[0][1], *target):
+                            chess.move_piece(*fig[0][1], *target, update_status=True)
+                            break
+                        else:
+                            raise Exception(f"Validation Failed: Matching pawn not found, move: {move}, game_id: {game_num}")
                 else:
                     raise Exception(f"Matching pawn not found, move: {move}, game_id: {game_num}")
 
             elif re.match(r'^[a-h]x[a-h][1-8][+#]?$', move):
                 fig_location = list(filter(lambda x: x[0][0].piece == "pawn"
                                                      and chess.get_notation(x[0][1])[0] == move[0], possible_moves))
-                target = Chess.get_cords(move[-2:])
+                target = Chess.get_cords(move[-2:] if "+" not in move and "#" not in move else move[-3:-1])
                 for fig in fig_location:
                     if target in fig[1]:
-                        chess.move_piece(*fig[0][1], *target, update_status=True)
-                        break
+                        if chess.is_move_valid(*fig[0][1], *target):
+                            chess.move_piece(*fig[0][1], *target, update_status=True)
+                            break
+                        else:
+                            raise Exception(
+                                f"Validation Failed: Matching pawn for diagonal move not found, move: {move}, game_id: {game_num}")
                 else:
+                    print(target)
+                    print(fig_location)
                     raise Exception(f"Matching pawn for diagonal move not found, move: {move}, game_id: {game_num}")
             else:
                 raise Exception(f'Unrecognised pawn move: {move}, game_id: {game_num}')
