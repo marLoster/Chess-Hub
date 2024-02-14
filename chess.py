@@ -716,11 +716,11 @@ class Chess:
             'Q': 'queen',
             'K': 'king',
         }
-        possible_moves = self.get_moves_figs(self.turn)
+        possible_moves = self.locate_pieces(self.turn)
         move = move.replace("=Q", "")
         if move[0] in piece_map:
             piece = piece_map[move[0]]
-            fig_location = list(filter(lambda x: x[0][0].piece == piece, possible_moves))
+            fig_location = list(filter(lambda x: x[0].piece == piece, possible_moves))
             if re.match(r'^[BNRQK][a-h]?[1-8]?x?[a-h][1-8]$', move):
                 target = Chess.get_cords(move[-2:])
             elif re.match(r'^[BNRQK][a-h]?[1-8]?x?[a-h][1-8][+#]$', move):
@@ -732,56 +732,56 @@ class Chess:
 
             if start_square:
                 if len(start_square) == 2:
-                    fig_location = list(filter(lambda x: x[0][1] == self.get_cords(start_square), fig_location))
+                    fig_location = list(filter(lambda x: x[1] == self.get_cords(start_square), fig_location))
                 elif start_square.isnumeric():
                     fig_location = list(
-                        filter(lambda x: Chess.get_notation(x[0][1])[1] == start_square[0], fig_location))
+                        filter(lambda x: Chess.get_notation(x[1])[1] == start_square[0], fig_location))
                 else:
                     fig_location = list(
-                        filter(lambda x: Chess.get_notation(x[0][1])[0] == start_square[0], fig_location))
+                        filter(lambda x: Chess.get_notation(x[1])[0] == start_square[0], fig_location))
 
             for fig in fig_location:
-                if target in fig[1]:
-                    return *fig[0][1], *target
+                if target in self.get_moves(*fig[1],check_pins=True):
+                    return *fig[1], *target
             else:
                 raise Exception(f"Matching {piece} move not found, move: {move}")
 
         elif move.startswith("O"):
-            fig_location = list(filter(lambda x: x[0][0].piece == "king", possible_moves))
+            fig_location = list(filter(lambda x: x[0].piece == "king", possible_moves))
             if self.turn:
-                if move.count("O") == 2 and self.get_cords("g1") in fig_location[0][1]:
+                if move.count("O") == 2 and self.get_cords("g1") in self.get_moves(*fig_location[0][1],check_pins=True):
                     return *self.get_cords("e1"), *self.get_cords("g1")
 
-                elif move.count("O") == 3 and self.get_cords("c1") in fig_location[0][1]:
+                elif move.count("O") == 3 and self.get_cords("c1") in self.get_moves(*fig_location[0][1],check_pins=True):
                     return *self.get_cords("e1"), *self.get_cords("c1")
                 else:
                     raise Exception(f"Matching move not found, move: {move}")
             else:
-                if move.count("O") == 2 and self.get_cords("g8") in fig_location[0][1]:
+                if move.count("O") == 2 and self.get_cords("g8") in self.get_moves(*fig_location[0][1],check_pins=True):
                     return *self.get_cords("e8"), *self.get_cords("g8")
-                elif move.count("O") == 3 and self.get_cords("c8") in fig_location[0][1]:
+                elif move.count("O") == 3 and self.get_cords("c8") in self.get_moves(*fig_location[0][1],check_pins=True):
                     return *self.get_cords("e8"), *self.get_cords("c8")
                 else:
                     raise Exception(f"Matching move not found, move: {move}")
 
         else:
             if re.match(r'^[a-h][1-8][+#]?$', move):
-                fig_location = list(filter(lambda x: Chess.get_notation(x[0][1])[0] == move[0]
-                                                     and x[0][0].piece == "pawn", possible_moves))
+                fig_location = list(filter(lambda x: Chess.get_notation(x[1])[0] == move[0]
+                                                     and x[0].piece == "pawn", possible_moves))
                 target = Chess.get_cords(move)
                 for fig in fig_location:
-                    if target in fig[1]:
-                        return *fig[0][1], *target
+                    if target in self.get_moves(*fig[1], check_pins=True):
+                        return *fig[1], *target
                 else:
                     raise Exception(f"Matching pawn not found, move: {move}")
 
             elif re.match(r'^[a-h]x[a-h][1-8][+#]?$', move):
-                fig_location = list(filter(lambda x: x[0][0].piece == "pawn"
-                                                     and self.get_notation(x[0][1])[0] == move[0], possible_moves))
+                fig_location = list(filter(lambda x: x[0].piece == "pawn"
+                                                     and self.get_notation(x[1])[0] == move[0], possible_moves))
                 target = Chess.get_cords(move[-2:] if "+" not in move and "#" not in move else move[-3:-1])
                 for fig in fig_location:
-                    if target in fig[1]:
-                        return *fig[0][1], *target
+                    if target in self.get_moves(*fig[1], check_pins=True):
+                        return *fig[1], *target
                 else:
                     raise Exception(f"Matching pawn for diagonal move not found, move: {move}")
             else:
