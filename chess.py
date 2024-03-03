@@ -655,6 +655,12 @@ class Chess:
         game_copy = self.copy_game()
         piece = game_copy.board[row][col]
 
+        if (piece.piece == "empty"
+                or self.turn == game_copy.board[new_row][new_col].color
+                or game_copy.board[new_row][new_col].piece == "king"
+                or self.turn != game_copy.board[row][col].color):
+            return False
+
         if (new_row, new_col) in game_copy.get_moves(row, col, check_pins=False):
             game_copy.move_piece(row, col, new_row, new_col)
             own_pieces = game_copy.locate_pieces(piece.color)
@@ -688,6 +694,27 @@ class Chess:
 
         #print(res)
         return res
+
+    def load_board(self, arr, turn):
+        figure_type_dict = {
+            0: "king",
+            1: "queen",
+            2: "rook",
+            3: "bishop",
+            4: "knight",
+            5: "pawn"
+        }
+
+        for i,_ in enumerate(self.board):
+            for j,_ in enumerate(self.board[i]):
+                self.board[i][j] = Piece("empty")
+
+        locations = np.transpose(np.nonzero(arr))
+        for piece_type, row, col in locations:
+            curr_piece = Piece(figure_type_dict[piece_type%6], turn if piece_type//6 == 0 else 1 - turn)
+            self.board[row][col] = curr_piece
+
+        self.turn = turn
 
     def code_move(self, row, col, new_row, new_col):
         res = np.zeros((2, 8, 8))
