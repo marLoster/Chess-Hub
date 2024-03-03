@@ -7,9 +7,9 @@ class Piece:
 
     def to_unicode(self):
         if self.color:
-            unicodes = {"king": "♔", "queen": "♕", "rook": "♖", "bishop": "♗", "knight": "♘", "pawn": "♙"}
+            unicodes = {"king": "♔", "queen": "♕", "rook": "♖", "bishop": "♗", "knight": "♘", "pawn": "♙", "empty": ""}
         else:
-            unicodes = {"king": "♚", "queen": "♛", "rook": "♜", "bishop": "♝", "knight": "♞", "pawn": "♟"}
+            unicodes = {"king": "♚", "queen": "♛", "rook": "♜", "bishop": "♝", "knight": "♞", "pawn": "♟", "empty": ""}
         return unicodes[self.piece]
 
     def copy(self):
