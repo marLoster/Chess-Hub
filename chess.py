@@ -13,12 +13,17 @@ class Chess:
         self.en_passant = []
         self.turn = 1
         self.curr_piece = None
-        self.status = "going"
+        self.status = 2
 
     def place_piece(self, piece, square):
         self.board[Chess.get_cords(square)[0]][Chess.get_cords(square)[1]] = piece
 
     def reset_board(self):
+
+        for i in range(8):
+            for j in range(8):
+                self.board[i][j] = Piece("empty")
+
         self.place_piece(Piece("rook", 0), "a8")
         self.place_piece(Piece("knight", 0), "b8")
         self.place_piece(Piece("bishop", 0), "c8")
@@ -813,3 +818,7 @@ class Chess:
                     raise Exception(f"Matching pawn for diagonal move not found, move: {move}")
             else:
                 raise Exception(f'Unrecognised pawn move: {move}')
+
+    def print_board(self):
+        for row in self.board:
+            print(*map(lambda x: x.to_unicode(), row))
