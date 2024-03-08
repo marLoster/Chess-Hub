@@ -8,6 +8,7 @@ from keras.layers import Dense, Flatten, Reshape
 
 import chess
 
+
 def main():
 
     x_train = np.load("x_train.npy")
