@@ -134,7 +134,7 @@ def main():
     root.title("Chess App")
     # model = VictorBot("value_nn_20240305181141.keras")
     # model = RachelBot("value_nn_20240305181141.keras")
-    model = VictorBot2("value_nn_20240305181141.keras")
+    model = VictorBot2("../AI/value_models/models/value_nn_20240305181141.keras")
     game = gameController(model)
     buttons = [[None] * 8 for _ in range(8)]
     create_board(root, game, buttons)

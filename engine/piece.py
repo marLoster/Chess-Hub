@@ -1,4 +1,4 @@
-from chess_values import Color, Figure
+from engine.chess_values import Color, Figure
 
 
 class Piece:

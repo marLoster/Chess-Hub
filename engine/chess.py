@@ -3,8 +3,8 @@ import re
 
 import numpy as np
 
-from piece import Piece
-from chess_values import Color, Figure
+from engine.piece import Piece
+from engine.chess_values import Color, Figure
 
 
 class Chess:
