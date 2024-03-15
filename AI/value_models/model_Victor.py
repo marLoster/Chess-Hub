@@ -1,6 +1,3 @@
-import numpy as np
-import tensorflow as tf
-
 from keras.models import load_model
 
 import engine.chess as chess

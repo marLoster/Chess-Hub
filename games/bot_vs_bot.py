@@ -13,6 +13,7 @@ bot1_wins = 0
 bot2_wins = 0
 draw = 0
 
+
 def harmonic_criterion(arr):
 
     new_array = np.zeros((8*8*8*8, 5))
@@ -30,6 +31,7 @@ def harmonic_criterion(arr):
 
     return sorted_moves[:, :-1].astype(int)
 
+
 def max_criterion(arr):
     positions = np.transpose(np.unravel_index(np.argsort(arr[0], axis=None)[::-1], arr[0].shape))
     moves = np.transpose(np.unravel_index(np.argsort(arr[1], axis=None)[::-1], arr[1].shape))
@@ -39,9 +41,10 @@ def max_criterion(arr):
     res = np.hstack((positions, moves))
     return res
 
+
 def bot1_move(model, game, color):
     coded_board = game.code_board(1 - color)
-    prediction = model.predict(coded_board.reshape(1,12,8,8), verbose=0)[0]
+    prediction = model.predict(coded_board.reshape(1, 12, 8, 8), verbose=0)[0]
     predicted_moves = max_criterion(prediction)
     for row_index, move_numbers in enumerate(predicted_moves):
         if (game.board[move_numbers[0]][move_numbers[1]].color == 1-color and
@@ -49,10 +52,12 @@ def bot1_move(model, game, color):
             game.move_piece(*move_numbers, update_status=True)
             break
 
+
 def weighted_mse(y_true, y_pred):
     weights = (y_true * 62) + 1
     squared_difference = tf.math.multiply(weights, tf.square(y_true - y_pred))
     return tf.reduce_mean(squared_difference)
+
 
 def bot2_move(model, game, color):
 
@@ -75,10 +80,8 @@ def bot2_move(model, game, color):
     game.move_piece(*moves, update_status=True)
 
 
-model1 = load_model("20240301220159.keras",
-                       custom_objects={"weighted_mse": weighted_mse})
-model2 = load_model("value_nn_20240305181141.keras",
-                   custom_objects={"weighted_mse": weighted_mse})
+model1 = load_model("20240301220159.keras", custom_objects={"weighted_mse": weighted_mse})
+model2 = load_model("value_nn_20240305181141.keras", custom_objects={"weighted_mse": weighted_mse})
 
 while True:
     print(bot1_wins, draw, bot2_wins)
@@ -104,5 +107,3 @@ while True:
     bot2_wins += 1 * (bot2_color == game.status)
 
     current_white = bot1 if current_white == bot2 else bot2
-
-

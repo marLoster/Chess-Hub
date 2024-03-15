@@ -10,9 +10,21 @@ class Piece:
 
     def to_unicode(self):
         if self.color:
-            unicodes = {Figure.king: "♔", Figure.queen: "♕", Figure.rook: "♖", Figure.bishop: "♗", Figure.knight: "♘", Figure.pawn: "♙", Figure.empty: ""}
+            unicodes = {Figure.king: "♔",
+                        Figure.queen: "♕",
+                        Figure.rook: "♖",
+                        Figure.bishop: "♗",
+                        Figure.knight: "♘",
+                        Figure.pawn: "♙",
+                        Figure.empty: ""}
         else:
-            unicodes = {Figure.king: "♚", Figure.queen: "♛", Figure.rook: "♜", Figure.bishop: "♝", Figure.knight: "♞", Figure.pawn: "♟", Figure.empty: ""}
+            unicodes = {Figure.king: "♚",
+                        Figure.queen: "♛",
+                        Figure.rook: "♜",
+                        Figure.bishop: "♝",
+                        Figure.knight: "♞",
+                        Figure.pawn: "♟",
+                        Figure.empty: ""}
         return unicodes[self.piece]
 
     def copy(self):

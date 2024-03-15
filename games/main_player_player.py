@@ -3,9 +3,10 @@ import tkinter as tk
 import engine.chess as chess
 from engine.chess_values import Color
 
-class gameController:
+
+class GameController:
     def __init__(self):
-        self.game : chess.Chess = chess.Chess()
+        self.game: chess.Chess = chess.Chess()
         self.game.reset_board()
         self.select_piece = False
         self.select_move = False
@@ -28,7 +29,7 @@ class gameController:
         self.bot_move = False
 
 
-def write_in_squares(buttons, game: gameController):
+def write_in_squares(buttons, game: GameController):
     for i in range(8):
         for j in range(8):
             color = "white" if game.game.board[i][j].color == 1 else "black"
@@ -42,7 +43,7 @@ def reset_buttons_color(buttons):
             buttons[i][j].config(bg=color)
 
 
-def click_square(buttons, game: gameController, row: int, col: int):
+def click_square(buttons, game: GameController, row: int, col: int):
     # case 1: select piece
     if game.select_piece:
         # case 1a: correct piece
@@ -80,7 +81,7 @@ def create_board(root, game, buttons):
         for j in range(8):
             color = "#4ae5e8" if (i + j) % 2 == 0 else "#33de33"
             buttons[i][j] = tk.Button(board_frame, bg=color, width=5, height=2, font=("Arial", 24),
-                                       command=lambda i=i, j=j: click_square(buttons, game, i, j))
+                                      command=lambda i=i, j=j: click_square(buttons, game, i, j))
             buttons[i][j].grid(row=i, column=j)
 
     write_in_squares(buttons, game)
@@ -92,7 +93,7 @@ def create_board(root, game, buttons):
 def main():
     root = tk.Tk()
     root.title("Chess App")
-    game = gameController()
+    game = GameController()
     game.set_select_piece()
     buttons = [[None] * 8 for _ in range(8)]
     create_board(root, game, buttons)

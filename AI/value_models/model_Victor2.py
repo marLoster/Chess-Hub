@@ -1,13 +1,11 @@
 import random
 
-import numpy as np
-import tensorflow as tf
-
 from keras.models import load_model
 
 import engine.chess as chess
 import engine.chess_bot as chess_bot
 from engine.chess_values import Color, Figure
+
 
 class VictorBot2(chess_bot.ChessBot):
     def __init__(self, model_location):
