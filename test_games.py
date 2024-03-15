@@ -1,6 +1,7 @@
 import re
 from functools import reduce
 from chess import Chess
+from chess_values import Color, Figure
 
 def extract_start_square(move_str):
     if move_str.endswith('+') or move_str.endswith('#'):
@@ -84,7 +85,7 @@ for game_num, game in lines:
                 raise Exception(f"Matching {piece} move not found, move: {move}, game_id: {game_num}")
 
         elif move.startswith("O"):
-            fig_location = list(filter(lambda x:  x[0][0].piece == "king", possible_moves))
+            fig_location = list(filter(lambda x:  x[0][0].piece == Figure.king, possible_moves))
             if chess.turn:
                 if move.count("O") == 2 and chess.get_cords("g1") in fig_location[0][1]:
                     if chess.is_move_valid(*chess.get_cords("e1"), *chess.get_cords("g1")):
@@ -116,7 +117,7 @@ for game_num, game in lines:
         else:
             if re.match(r'^[a-h][1-8][+#]?$', move):
                 fig_location = list(filter(lambda x: Chess.get_notation(x[0][1])[0] == move[0]
-                                                     and x[0][0].piece == "pawn", possible_moves))
+                                                     and x[0][0].piece == Figure.pawn, possible_moves))
                 target = Chess.get_cords(move)
                 for fig in fig_location:
                     if target in fig[1]:
@@ -129,7 +130,7 @@ for game_num, game in lines:
                     raise Exception(f"Matching pawn not found, move: {move}, game_id: {game_num}")
 
             elif re.match(r'^[a-h]x[a-h][1-8][+#]?$', move):
-                fig_location = list(filter(lambda x: x[0][0].piece == "pawn"
+                fig_location = list(filter(lambda x: x[0][0].piece == Figure.pawn
                                                      and chess.get_notation(x[0][1])[0] == move[0], possible_moves))
                 target = Chess.get_cords(move[-2:] if "+" not in move and "#" not in move else move[-3:-1])
                 for fig in fig_location:

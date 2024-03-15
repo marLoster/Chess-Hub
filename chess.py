@@ -4,14 +4,15 @@ import re
 import numpy as np
 
 from piece import Piece
+from chess_values import Color, Figure
 
 
 class Chess:
 
     def __init__(self):
-        self.board = [[Piece("empty") for _ in range(8)] for _ in range(8)]
+        self.board = [[Piece(Figure.empty) for _ in range(8)] for _ in range(8)]
         self.en_passant = []
-        self.turn = 1
+        self.turn = Color.white
         self.curr_piece = None
         self.status = 2
 
@@ -22,65 +23,65 @@ class Chess:
 
         for i in range(8):
             for j in range(8):
-                self.board[i][j] = Piece("empty")
+                self.board[i][j] = Piece(Figure.empty)
 
-        self.place_piece(Piece("rook", 0), "a8")
-        self.place_piece(Piece("knight", 0), "b8")
-        self.place_piece(Piece("bishop", 0), "c8")
-        self.place_piece(Piece("queen", 0), "d8")
-        self.place_piece(Piece("king", 0), "e8")
-        self.place_piece(Piece("bishop", 0), "f8")
-        self.place_piece(Piece("knight", 0), "g8")
-        self.place_piece(Piece("rook", 0), "h8")
+        self.place_piece(Piece(Figure.rook, Color.black), "a8")
+        self.place_piece(Piece(Figure.knight, Color.black), "b8")
+        self.place_piece(Piece(Figure.bishop, Color.black), "c8")
+        self.place_piece(Piece(Figure.queen, Color.black), "d8")
+        self.place_piece(Piece(Figure.king, Color.black), "e8")
+        self.place_piece(Piece(Figure.bishop, Color.black), "f8")
+        self.place_piece(Piece(Figure.knight, Color.black), "g8")
+        self.place_piece(Piece(Figure.rook, Color.black), "h8")
 
-        self.place_piece(Piece("pawn", 0), "a7")
-        self.place_piece(Piece("pawn", 0), "b7")
-        self.place_piece(Piece("pawn", 0), "c7")
-        self.place_piece(Piece("pawn", 0), "d7")
-        self.place_piece(Piece("pawn", 0), "e7")
-        self.place_piece(Piece("pawn", 0), "f7")
-        self.place_piece(Piece("pawn", 0), "g7")
-        self.place_piece(Piece("pawn", 0), "h7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "a7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "b7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "c7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "d7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "e7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "f7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "g7")
+        self.place_piece(Piece(Figure.pawn, Color.black), "h7")
 
-        self.place_piece(Piece("rook", 1), "a1")
-        self.place_piece(Piece("knight", 1), "b1")
-        self.place_piece(Piece("bishop", 1), "c1")
-        self.place_piece(Piece("queen", 1), "d1")
-        self.place_piece(Piece("king", 1), "e1")
-        self.place_piece(Piece("bishop", 1), "f1")
-        self.place_piece(Piece("knight", 1), "g1")
-        self.place_piece(Piece("rook", 1), "h1")
+        self.place_piece(Piece(Figure.rook, Color.white), "a1")
+        self.place_piece(Piece(Figure.knight, Color.white), "b1")
+        self.place_piece(Piece(Figure.bishop, Color.white), "c1")
+        self.place_piece(Piece(Figure.queen, Color.white), "d1")
+        self.place_piece(Piece(Figure.king, Color.white), "e1")
+        self.place_piece(Piece(Figure.bishop, Color.white), "f1")
+        self.place_piece(Piece(Figure.knight, Color.white), "g1")
+        self.place_piece(Piece(Figure.rook, Color.white), "h1")
 
-        self.place_piece(Piece("pawn", 1), "a2")
-        self.place_piece(Piece("pawn", 1), "b2")
-        self.place_piece(Piece("pawn", 1), "c2")
-        self.place_piece(Piece("pawn", 1), "d2")
-        self.place_piece(Piece("pawn", 1), "e2")
-        self.place_piece(Piece("pawn", 1), "f2")
-        self.place_piece(Piece("pawn", 1), "g2")
-        self.place_piece(Piece("pawn", 1), "h2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "a2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "b2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "c2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "d2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "e2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "f2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "g2")
+        self.place_piece(Piece(Figure.pawn, Color.white), "h2")
 
     def move_piece(self, row, col, new_row, new_col, update_status=False):
         #print(f"attempted move: {new_row}, {new_col}")
-        if abs(col-new_col) == 2 and self.board[row][col].piece == "king":
+        if abs(col-new_col) == 2 and self.board[row][col].piece == Figure.king:
             if new_col > col:
                 self.board[row][(col+new_col)//2] = self.board[row][7]
-                self.board[row][7] = Piece("empty")
+                self.board[row][7] = Piece(Figure.empty)
                 self.board[row][7].moved = True
             else:
                 self.board[row][(col+new_col)//2] = self.board[row][0]
-                self.board[row][0] = Piece("empty")
+                self.board[row][0] = Piece(Figure.empty)
                 self.board[row][0].moved = True
 
         self.board[new_row][new_col] = self.board[row][col]
-        self.board[row][col] = Piece("empty")
+        self.board[row][col] = Piece(Figure.empty)
         self.board[new_row][new_col].moved = True
-        if (new_row == 0 or new_row == 7) and self.board[new_row][new_col].piece == "pawn":
-            self.board[new_row][new_col].piece = "queen"
+        if (new_row == 0 or new_row == 7) and self.board[new_row][new_col].piece == Figure.pawn:
+            self.board[new_row][new_col].piece = Figure.queen
         if (self.en_passant and new_row == self.en_passant[0] and
-                new_col == self.en_passant[1] and self.board[new_row][new_col].piece == "pawn"):
-            self.board[row][new_col] = Piece("empty")
-        if abs(row-new_row) == 2 and self.board[new_row][new_col].piece=="pawn":
+                new_col == self.en_passant[1] and self.board[new_row][new_col].piece == Figure.pawn):
+            self.board[row][new_col] = Piece(Figure.empty)
+        if abs(row-new_row) == 2 and self.board[new_row][new_col].piece==Figure.pawn:
             self.en_passant = ((new_row+row)//2, col)
         else:
             self.en_passant = False
@@ -94,7 +95,7 @@ class Chess:
             combined_moves = reduce(lambda moves_list_a, moves_list_b: moves_list_a + moves_list_b, moves)
             if len(combined_moves) == 0:
                 own_pieces = self.locate_pieces(self.turn)
-                king = next(filter(lambda x: x[0].piece == "king", own_pieces))[1]
+                king = next(filter(lambda x: x[0].piece == Figure.king, own_pieces))[1]
                 if king in self.get_all_moves(1 - self.turn):
                     self.status = 1 - self.turn
                 else:
@@ -114,17 +115,17 @@ class Chess:
         piece = self.board[row][col]
         own_pieces = self.locate_pieces(piece.color)
         other_pieces = self.locate_pieces(1 - piece.color)
-        king = next(filter(lambda x: x[0].piece == "king", own_pieces))[1]
+        king = next(filter(lambda x: x[0].piece == Figure.king, own_pieces))[1]
         moves = []
 
         #print(f"{'' if check_pins else '    '}getting moves for {piece.piece} on ({row},{col})")
 
         match piece.piece:
 
-            case "king":
+            case Figure.king:
                 danger_points = []
 
-                other_king = next(filter(lambda x: x[0].piece == "king", other_pieces))[1]
+                other_king = next(filter(lambda x: x[0].piece == Figure.king, other_pieces))[1]
                 for offset_row in (-1, 0, 1):
                     for offset_col in (-1, 0, 1):
                         danger_points.append((other_king[0] + offset_row, other_king[1] + offset_col))
@@ -145,7 +146,7 @@ class Chess:
                                     game_copy.move_piece(row, col, row+offset_row, col+offset_col)
                                     other_pieces_curr = game_copy.locate_pieces(1 - piece.color)
                                     other_pieces_without_king = list(
-                                        filter(lambda fig: fig[0].piece != "king",
+                                        filter(lambda fig: fig[0].piece != Figure.king,
                                                other_pieces_curr))
                                     if other_pieces_without_king:
                                         danger_points_curr = list(
@@ -164,14 +165,14 @@ class Chess:
                                 #print('index error')
                                 continue
 
-                other_pieces_without_king = list(filter(lambda piece: piece[0].piece != "king", other_pieces))
+                other_pieces_without_king = list(filter(lambda piece: piece[0].piece != Figure.king, other_pieces))
                 if other_pieces_without_king:
                     danger_points = list(map(lambda piece: self.get_moves(piece[1][0], piece[1][1], check_pins=False), other_pieces_without_king))
                     danger_points = reduce(lambda moves_list_a, moves_list_b: moves_list_a + moves_list_b, danger_points)
                 else:
                     danger_points = []
 
-                other_king = next(filter(lambda x: x[0].piece == "king", other_pieces))[1]
+                other_king = next(filter(lambda x: x[0].piece == Figure.king, other_pieces))[1]
                 for offset_row in (-1, 0, 1):
                     for offset_col in (-1, 0, 1):
                         danger_points.append((other_king[0] + offset_row, other_king[1] + offset_col))
@@ -179,17 +180,16 @@ class Chess:
                 if (row == 0 and piece.color == 0) or (row == 7 and piece.color == 1):
                     if not self.board[row][col].moved and not self.board[row][0].moved\
                         and (row, 2) not in danger_points and (row, 3) not in danger_points\
-                        and (row,col) not in danger_points and self.board[row][1].piece == "empty"\
-                        and self.board[row][2].piece == "empty" and self.board[row][3].piece == "empty":
+                        and (row,col) not in danger_points and self.board[row][1].piece == Figure.empty\
+                        and self.board[row][2].piece == Figure.empty and self.board[row][3].piece == Figure.empty:
                         moves.append((row, 2))
 
                     if not self.board[row][col].moved and not self.board[row][7].moved\
                         and (row, 6) not in danger_points and (row, 5) not in danger_points and (row, col) not in danger_points\
-                        and self.board[row][6].piece == "empty" and self.board[row][5].piece == "empty":
+                        and self.board[row][6].piece == Figure.empty and self.board[row][5].piece == Figure.empty:
                         moves.append((row, 6))
 
-
-            case "queen":
+            case Figure.queen:
 
                 # horizontal and vertical
                 for new_row in range(row+1, 8):
@@ -342,7 +342,7 @@ class Chess:
                     if self.board[new_row][new_col].color == 1 - piece.color:
                         break
 
-            case "rook":
+            case Figure.rook:
 
                 for new_row in range(row + 1, 8):
                     if self.board[new_row][col].color == piece.color:
@@ -408,7 +408,7 @@ class Chess:
                     if self.board[row][new_col].color == 1 - piece.color:
                         break
 
-            case "bishop":
+            case Figure.bishop:
                 for offset in range(1, 8):
                     new_row = row + offset
                     new_col = col + offset
@@ -493,7 +493,7 @@ class Chess:
                     moves.append((new_row, new_col))
                     if self.board[new_row][new_col].color == 1 - piece.color:
                         break
-            case "knight":
+            case Figure.knight:
                 possible_moves = [(row+2, col+1),
                                   (row+2, col-1),
                                   (row-2, col+1),
@@ -517,18 +517,18 @@ class Chess:
 
                 return possible_moves
 
-            case "pawn":
+            case Figure.pawn:
                 #print(row, col)
                 if not piece.color:
 
-                    if self.board[row+1][col].piece == "empty":
+                    if self.board[row+1][col].piece == Figure.empty:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row+1, col)
                         if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
                             moves.append((row+1, col))
 
                         try:
-                            if not piece.moved and self.board[row+2][col].piece == "empty":
+                            if not piece.moved and self.board[row+2][col].piece == Figure.empty:
                                 game_copy = self.copy_game()
                                 game_copy.move_piece(row, col, row + 2, col)
                                 if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
@@ -561,19 +561,19 @@ class Chess:
                             and self.board[row][self.en_passant[1]].color == 1 - piece.color:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, self.en_passant[0], self.en_passant[1])
-                        #game_copy.board[row][self.en_passant[1]] = Piece("empty")
+                        #game_copy.board[row][self.en_passant[1]] = Piece(Figure.empty)
                         if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
                             moves.append((self.en_passant[0], self.en_passant[1]))
                 else:
 
-                    if self.board[row - 1][col].piece == "empty":
+                    if self.board[row - 1][col].piece == Figure.empty:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, row - 1, col)
                         if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
                             moves.append((row - 1, col))
 
                         try:
-                            if not piece.moved and self.board[row - 2][col].piece == "empty":
+                            if not piece.moved and self.board[row - 2][col].piece == Figure.empty:
                                 game_copy = self.copy_game()
                                 game_copy.move_piece(row, col, row - 2, col)
                                 if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
@@ -607,7 +607,7 @@ class Chess:
                             and self.board[row][self.en_passant[1]].color == 1 - piece.color:
                         game_copy = self.copy_game()
                         game_copy.move_piece(row, col, self.en_passant[0], self.en_passant[1])
-                        #game_copy.board[row][self.en_passant[1]] = Piece("empty")
+                        #game_copy.board[row][self.en_passant[1]] = Piece(Figure.empty)
                         if (not check_pins or king not in game_copy.get_all_moves(1 - piece.color)):
                             moves.append((self.en_passant[0], self.en_passant[1]))
         return moves
@@ -660,16 +660,16 @@ class Chess:
         game_copy = self.copy_game()
         piece = game_copy.board[row][col]
 
-        if (piece.piece == "empty"
+        if (piece.piece == Figure.empty
                 or self.turn == game_copy.board[new_row][new_col].color
-                or game_copy.board[new_row][new_col].piece == "king"
+                or game_copy.board[new_row][new_col].piece == Figure.king
                 or self.turn != game_copy.board[row][col].color):
             return False
 
         if (new_row, new_col) in game_copy.get_moves(row, col, check_pins=False):
             game_copy.move_piece(row, col, new_row, new_col)
             own_pieces = game_copy.locate_pieces(piece.color)
-            king = next(filter(lambda x: x[0].piece == "king", own_pieces))[1]
+            king = next(filter(lambda x: x[0].piece == Figure.king, own_pieces))[1]
             return king not in game_copy.get_all_moves(1 - piece.color)
 
         return False
@@ -683,18 +683,18 @@ class Chess:
             1 - turn: 6
         }
         figure_type_dict = {
-            "king": 0,
-            "queen": 1,
-            "rook": 2,
-            "bishop": 3,
-            "knight": 4,
-            "pawn": 5
+            Figure.king: 0,
+            Figure.queen: 1,
+            Figure.rook: 2,
+            Figure.bishop: 3,
+            Figure.knight: 4,
+            Figure.pawn: 5
         }
 
         for i,_ in enumerate(self.board):
             for j,_ in enumerate(self.board[i]):
                 current_piece = self.board[i][j]
-                if current_piece.piece != "empty":
+                if current_piece.piece != Figure.empty:
                     res[turn_dict[current_piece.color] + figure_type_dict[current_piece.piece]][i][j] = 1
 
         #print(res)
@@ -702,17 +702,17 @@ class Chess:
 
     def load_board(self, arr, turn):
         figure_type_dict = {
-            0: "king",
-            1: "queen",
-            2: "rook",
-            3: "bishop",
-            4: "knight",
-            5: "pawn"
+            0: Figure.king,
+            1: Figure.queen,
+            2: Figure.rook,
+            3: Figure.bishop,
+            4: Figure.knight,
+            5: Figure.pawn
         }
 
         for i,_ in enumerate(self.board):
             for j,_ in enumerate(self.board[i]):
-                self.board[i][j] = Piece("empty")
+                self.board[i][j] = Piece(Figure.empty)
 
         locations = np.transpose(np.nonzero(arr))
         for piece_type, row, col in locations:
@@ -779,7 +779,7 @@ class Chess:
                 raise Exception(f"Matching {piece} move not found, move: {move}")
 
         elif move.startswith("O"):
-            fig_location = list(filter(lambda x: x[0].piece == "king", possible_moves))
+            fig_location = list(filter(lambda x: x[0].piece == Figure.king, possible_moves))
             if self.turn:
                 if move.count("O") == 2 and self.get_cords("g1") in self.get_moves(*fig_location[0][1],check_pins=True):
                     return *self.get_cords("e1"), *self.get_cords("g1")
@@ -799,7 +799,7 @@ class Chess:
         else:
             if re.match(r'^[a-h][1-8][+#]?$', move):
                 fig_location = list(filter(lambda x: Chess.get_notation(x[1])[0] == move[0]
-                                                     and x[0].piece == "pawn", possible_moves))
+                                                     and x[0].piece == Figure.pawn, possible_moves))
                 target = Chess.get_cords(move)
                 for fig in fig_location:
                     if target in self.get_moves(*fig[1], check_pins=True):
@@ -808,7 +808,7 @@ class Chess:
                     raise Exception(f"Matching pawn not found, move: {move}")
 
             elif re.match(r'^[a-h]x[a-h][1-8][+#]?$', move):
-                fig_location = list(filter(lambda x: x[0].piece == "pawn"
+                fig_location = list(filter(lambda x: x[0].piece == Figure.pawn
                                                      and self.get_notation(x[1])[0] == move[0], possible_moves))
                 target = Chess.get_cords(move[-2:] if "+" not in move and "#" not in move else move[-3:-1])
                 for fig in fig_location:

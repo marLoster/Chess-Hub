@@ -1,6 +1,8 @@
 import tkinter as tk
 
 from chess import Chess
+from chess_values import Color, Figure
+
 
 # Initialize the main application window
 root = tk.Tk()
@@ -45,7 +47,7 @@ def draw_game(game: Chess):
     draw_board()
     for row in range(8):
         for col in range(8):
-            if game.board[row][col].piece != "empty":
+            if game.board[row][col].piece != Figure.empty:
                 place_piece(game.board[row][col].to_unicode(),
                             row,
                             col,

@@ -1,3 +1,5 @@
+from chess_values import Color, Figure
+
 class Piece:
 
     def __init__(self, piece, color=-1, moved=False):
@@ -7,9 +9,9 @@ class Piece:
 
     def to_unicode(self):
         if self.color:
-            unicodes = {"king": "♔", "queen": "♕", "rook": "♖", "bishop": "♗", "knight": "♘", "pawn": "♙", "empty": ""}
+            unicodes = {Figure.king: "♔", Figure.queen: "♕", Figure.rook: "♖", Figure.bishop: "♗", Figure.knight: "♘", Figure.pawn: "♙", Figure.empty: ""}
         else:
-            unicodes = {"king": "♚", "queen": "♛", "rook": "♜", "bishop": "♝", "knight": "♞", "pawn": "♟", "empty": ""}
+            unicodes = {Figure.king: "♚", Figure.queen: "♛", Figure.rook: "♜", Figure.bishop: "♝", Figure.knight: "♞", Figure.pawn: "♟", Figure.empty: ""}
         return unicodes[self.piece]
 
     def copy(self):
