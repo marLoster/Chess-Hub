@@ -5,8 +5,8 @@ import tensorflow as tf
 
 from keras.models import load_model
 
-import chess
-import chess_bot
+import engine.chess as chess
+import engine.chess_bot as chess_bot
 
 
 class RachelBot(chess_bot.ChessBot):

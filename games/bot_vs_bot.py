@@ -3,8 +3,8 @@ import tensorflow as tf
 
 from keras.models import load_model
 
-import chess
-from chess_values import Color
+import engine.chess as chess
+from engine.chess_values import Color
 
 bot1 = "value_nn_20240305181141.keras"
 bot2 = "20240301220159.keras"

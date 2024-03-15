@@ -1,12 +1,12 @@
 import tkinter as tk
 
-import chess
+import engine.chess as chess
 
-from model_Max import MaxBot
-from model_Henry import HenryBot
-from model_Rachel import RachelBot
-from model_Victor import VictorBot
-from model_Victor2 import VictorBot2
+from AI.board_models.model_Max import MaxBot
+from AI.board_models.model_Henry import HenryBot
+from AI.board_models.model_Rachel import RachelBot
+from AI.value_models.model_Victor import VictorBot
+from AI.value_models.model_Victor2 import VictorBot2
 
 class gameController:
     def __init__(self, model):

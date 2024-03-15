@@ -6,7 +6,7 @@ import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Reshape
 
-import chess
+import engine.chess as chess
 
 
 def main():
