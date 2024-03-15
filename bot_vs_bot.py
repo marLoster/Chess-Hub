@@ -4,6 +4,7 @@ import tensorflow as tf
 from keras.models import load_model
 
 import chess
+from chess_values import Color
 
 bot1 = "value_nn_20240305181141.keras"
 bot2 = "20240301220159.keras"
@@ -84,7 +85,7 @@ while True:
     game = chess.Chess()
     game.reset_board()
     current_player = current_white
-    bot1_color = 1 if current_white == bot1 else 0
+    bot1_color = Color.white if current_white == bot1 else Color.black
     bot2_color = 1 - bot1_color
     move = 0
     while game.status == 2:

@@ -5,6 +5,9 @@ class Color(IntEnum):
     white = 1
     black = 0
 
+    def other(self):
+        return Color.black if self == Color.white else Color.white
+
 
 class Figure(StrEnum):
     king = "king"
