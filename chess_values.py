@@ -1,4 +1,4 @@
-from enum import IntEnum, StrEnum
+from enum import IntEnum, Enum
 
 
 class Color(IntEnum):
@@ -9,7 +9,7 @@ class Color(IntEnum):
         return Color.black if self == Color.white else Color.white
 
 
-class Figure(StrEnum):
+class Figure(str, Enum):
     king = "king"
     queen = "queen"
     rook = "rook"
