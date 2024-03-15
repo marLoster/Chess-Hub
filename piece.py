@@ -1,5 +1,6 @@
 from chess_values import Color, Figure
 
+
 class Piece:
 
     def __init__(self, piece, color=-1, moved=False):
