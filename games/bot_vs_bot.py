@@ -6,12 +6,14 @@ from keras.models import load_model
 import engine.chess as chess
 from AI.board_models.model_Henry import HenryBot
 from AI.board_models.model_Max import MaxBot
+from AI.board_models.model_Rachel import RachelBot
 from engine.chess_values import Color
 
+
 def main():
-    bot_1 = HenryBot("../AI/board_models/models/20240301220159.keras")
+    bot_1 = RachelBot("../AI/board_models/models/20240301220159.keras")
     bot_1_id = 1
-    bot_2 = MaxBot("../AI/board_models/models/20240301220159.keras")
+    bot_2 = RachelBot("../AI/board_models/models/20240301220159.keras")
     bot_2_id = 2
 
     current_white = bot_1_id
@@ -41,8 +43,14 @@ def main():
                 current_player = bot_1_id
             move += 1
 
+            if move == 250:
+                game.status = -1
+                break
+
         bot1_wins += 1 * (bot1_color == game.status)
         bot2_wins += 1 * (bot2_color == game.status)
+        if game.status == -1:
+            draw += 1
 
         current_white = bot_1_id if current_white == bot_2_id else bot_2_id
 
