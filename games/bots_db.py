@@ -8,7 +8,7 @@ from keras.models import load_model
 
 import engine.chess as chess
 from engine.chess_values import Color
-from Database import connection
+from database import connection
 from AI.board_models.model_Rachel import RachelBot
 from AI.board_models.model_Max import MaxBot
 from AI.board_models.model_Henry import HenryBot
@@ -51,5 +51,6 @@ while game.status == 2:
     current_player = white if current_player == black else black
 
 formatted_datetime = datetime.now().strftime("%Y%m%d%H%M")
-connection.database_exec("INSERT INTO games (white, black, winner, date) VALUES (%s, %s, %s, %s)",
-                         (white, black, game.status, formatted_datetime))
+con = connection.DBconnection()
+con.execute("INSERT INTO games (white, black, winner, date) VALUES (%s, %s, %s, %s)",
+            (white, black, game.status, formatted_datetime))

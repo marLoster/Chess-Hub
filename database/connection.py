@@ -5,7 +5,7 @@ class DBconnection():
 
     @staticmethod
     def _parse_credentials():
-        with open("../Database/cred.yaml", 'r') as stream:
+        with open("/cred.yaml", 'r') as stream:
             try:
                 credentials = yaml.safe_load(stream)
                 return credentials.get('database'), credentials.get('user'), credentials.get(
