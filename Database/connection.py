@@ -1,66 +1,53 @@
 import psycopg2
 import yaml
 
+class DBconnection():
 
-def parse_credentials():
-    with open("../Database/cred.yaml", 'r') as stream:
+    @staticmethod
+    def _parse_credentials():
+        with open("../Database/cred.yaml", 'r') as stream:
+            try:
+                credentials = yaml.safe_load(stream)
+                return credentials.get('database'), credentials.get('user'), credentials.get(
+                    'password'), credentials.get(
+                    'host')
+            except yaml.YAMLError as exc:
+                print(exc)
+
+    def __init__(self):
+        dbname, user, password, host = self._parse_credentials()
+        self.conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host
+        )
+        self.cursor = self.conn.cursor()
+
+    def __del__(self):
+        if self.conn:
+            self.cursor.close()
+            self.conn.close()
+
+    def select(self, query):
         try:
-            credentials = yaml.safe_load(stream)
-            return credentials.get('database'), credentials.get('user'), credentials.get('password'), credentials.get(
-                'host')
-        except yaml.YAMLError as exc:
-            print(exc)
+            self.cursor.execute(query)
+            records = self.cursor.fetchall()
+            print("All records in the table:")
+            for row in records:
+                print(row)
+            print()
 
+        except (Exception, psycopg2.Error) as error:
+            print("Error while executing statement:", error)
 
-def database_select(query):
-    conn = None
-    cursor = None
-    dbname, user, password, host = parse_credentials()
-    try:
-        conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host
-        )
-        cursor = conn.cursor()
-        cursor.execute(query)
-        records = cursor.fetchall()
-        print("All records in the table:")
-        for row in records:
-            print(row)
-        print()
+    def execute(self, query, params=None):
+        try:
+            if params:
+                self.cursor.execute(query, params)
+            else:
+                self.cursor.execute(query)
+            self.conn.commit()
 
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL:", error)
-    finally:
-        # Close the database connection
-        if conn:
-            cursor.close()
-            conn.close()
-
-def database_exec(query, params=None):
-    conn = None
-    cursor = None
-    dbname, user, password, host = parse_credentials()
-    try:
-        conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host
-        )
-        cursor = conn.cursor()
-        if params:
-            cursor.execute(query,params)
-        else:
-            cursor.execute(query)
-        conn.commit()
-
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL:", error)
-    finally:
-        # Close the database connection
-        if conn:
-            cursor.close()
-            conn.close()
+        except (Exception, psycopg2.Error) as error:
+            print("Error while executing statement:", error)
