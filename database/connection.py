@@ -52,3 +52,15 @@ class DBconnection():
 
         except (Exception, psycopg2.Error) as error:
             print("Error while executing statement:", error)
+
+    def create_csv(self, query, filename):
+        try:
+            self.cursor.execute(query)
+            records = self.cursor.fetchall()
+            print("All records in the table:")
+            with open(filename, "w") as f:
+                for row in records:
+                    f.write(",".join(row))
+
+        except (Exception, psycopg2.Error) as error:
+            print("Error while executing statement:", error)
