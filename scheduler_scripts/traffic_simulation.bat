@@ -18,4 +18,3 @@ python bots_db.py
 
 rem Deactivate the environment
 call conda deactivate
-pause
