@@ -10,7 +10,7 @@ There are models with different outputs:
 
   value_models (Victor) - These models predict how good current board is for them. To select a move they explore all possible moves and select the one for which predicted value is the highest.
   Values for training set were calculated based on custom function that gives positive values if the game was eventually won, and negative if it was lost. The closer to the end, the higher values are given to the board. 
-  There are also bonus points for making a check.
+  There are also bonus points for making a check-mate.
 
   Victor2 is a better version of Victor that will almost always prefer to check the opponent, however this is implemented by simple if-else statements.
 
