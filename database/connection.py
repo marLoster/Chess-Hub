@@ -53,9 +53,9 @@ class DBconnection():
         except (Exception, psycopg2.Error) as error:
             print("Error while executing statement:", error)
 
-    def create_csv(self, query, filename, args):
+    def create_csv(self, query, filename, params):
         try:
-            self.cursor.execute(query, args)
+            self.cursor.execute(query, params)
             records = self.cursor.fetchall()
             print("All records in the table:")
             with open(filename, "w") as f:
