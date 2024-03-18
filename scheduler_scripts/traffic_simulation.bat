@@ -1,6 +1,5 @@
 cd ..
 cd games
-pause
 set CONDAPATH=C:\Users\Admin\anaconda3
 rem https://gist.github.com/maximlt/531419545b039fa33f8845e5bc92edd6
 rem Define here the name of the environment
