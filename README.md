@@ -3,3 +3,5 @@ Included in this project are also working scripts that simulate games using two 
 There are also scripts that populate data warehouse once a day with the results of games between bots.
 
 There are various scripts for models in the AI directory however, there are still a lot of other ideas to try and there is certainly a place to improve.
+
+The application uses its own chess engine written from scratch.
