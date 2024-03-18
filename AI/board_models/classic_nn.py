@@ -6,7 +6,7 @@ import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Reshape
 
-import chess
+import engine.chess as chess
 
 
 def main():
@@ -22,12 +22,10 @@ def main():
     print("x_test", x_test.shape)
     print("y_test", y_test.shape)
 
-
     def weighted_mse(y_true, y_pred):
         weights = (y_true * 62) + 1
         squared_difference = tf.math.multiply(weights, tf.square(y_true - y_pred))
         return tf.reduce_mean(squared_difference)
-
 
     def max_criterion(arr):
         positions = np.transpose(np.unravel_index(np.argsort(arr[0], axis=None)[::-1], arr[0].shape))
@@ -37,7 +35,6 @@ def main():
         moves = np.tile(moves, (64, 1))
         res = np.hstack((positions, moves))
         return res
-
 
     def harmonic_criterion(arr):
 
@@ -56,12 +53,7 @@ def main():
 
         return sorted_moves[:, :-1].astype(int)
 
-
-
-
-    for i,layer_set in enumerate([
-
-
+    for i, layer_set in enumerate([
                                 (Dense(32, activation='tanh'),
                                  Dense(32, activation='tanh'),
                                  Dense(32, activation='tanh'),
@@ -69,20 +61,18 @@ def main():
                                  ]):
 
         model = Sequential()
-        model.add(Flatten(input_shape=(12,8,8)))
+        model.add(Flatten(input_shape=(12, 8, 8)))
         for layer in layer_set:
             model.add(layer)
 
         model.add(Reshape((2, 8, 8)))
 
-        #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         model.compile(loss=weighted_mse, optimizer='adam', metrics=['accuracy'])
-
 
         model.fit(x_train, y_train, epochs=10, batch_size=4, verbose=0)
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
         model.save(f"{current_time}.keras")
-
 
         loss, accuracy = model.evaluate(x_test, y_test)
 
@@ -96,14 +86,11 @@ def main():
             chess_game_black = chess.Chess()
             chess_game_black.load_board(board, 0)
 
-
-
             predicted_moves = harmonic_criterion(pred)
 
             for row_index, move_numbers in enumerate(predicted_moves):
                 try:
                     if chess_game_white.is_move_valid(*move_numbers) or chess_game_black.is_move_valid(*move_numbers):
-                        #print(move_numbers)
                         number_of_tries.append(row_index)
                         break
                 except Exception as e:
@@ -115,6 +102,7 @@ def main():
                     print()
 
         print(i, accuracy, sum(number_of_tries)/len(number_of_tries))
+
 
 if __name__ == "__main__":
     main()

@@ -1,18 +1,14 @@
 import random
 
-import numpy as np
-import tensorflow as tf
-
 from keras.models import load_model
 
-import chess
-import chess_bot
+import engine.chess as chess
+import engine.chess_bot as chess_bot
 
 
 class RachelBot(chess_bot.ChessBot):
     def __init__(self, model_location):
         super().__init__(model_location)
-        self.model = load_model(model_location)
 
     def get_move(self, board, color):
         game = chess.Chess()
