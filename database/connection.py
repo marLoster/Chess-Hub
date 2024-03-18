@@ -57,7 +57,6 @@ class DBconnection():
         try:
             self.cursor.execute(query, params)
             records = self.cursor.fetchall()
-            print("All records in the table:")
             with open(filename, "w") as f:
                 for row in records:
                     f.write(",".join(row))
