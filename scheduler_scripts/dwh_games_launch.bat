@@ -16,4 +16,3 @@ python dwh_games.py
 
 rem Deactivate the environment
 call conda deactivate
-pause
