@@ -59,7 +59,14 @@ class DBconnection():
             records = self.cursor.fetchall()
             with open(filename, "w") as f:
                 for row in records:
-                    f.write(",".join(row))
+                    row_str = map(lambda x: str(x), row)
+                    f.write(",".join(row_str))
 
+        except (Exception, psycopg2.Error) as error:
+            print("Error while executing statement:", error)
+
+    def copy(self, file, table, sep='\\t', columns=None):
+        try:
+            self.cursor.copy_from(file, table, sep=sep, columns=columns)
         except (Exception, psycopg2.Error) as error:
             print("Error while executing statement:", error)
