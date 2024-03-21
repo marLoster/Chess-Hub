@@ -11,10 +11,10 @@ import engine.chess as chess
 
 def main():
 
-    x_train = np.load("x_train.npy")
-    y_train = np.load("y_train.npy")
-    x_test = np.load("x_test.npy")
-    y_test = np.load("y_test.npy")
+    x_train = np.load("../../data/x_train.npy")
+    y_train = np.load("../../data/y_train.npy")
+    x_test = np.load("../../data/x_test.npy")
+    y_test = np.load("../../data/y_test.npy")
 
     print("shapes: ")
     print("x_train", x_train.shape)
@@ -56,78 +56,78 @@ def main():
     for i, layer_set in enumerate([
 
 
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                (Conv2D(64, kernel_size=(2, 2), activation='sigmoid', input_shape=(12, 8, 8),
                                         data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(64, kernel_size=(4, 4), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Conv2D(64, kernel_size=(4, 4), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
+                                 MaxPool2D((2, 2),  data_format="channels_first"),
                                  Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
+                                 MaxPool2D((2, 2), data_format="channels_first"),
                                  Flatten(),
                                  Dense(8 * 8 * 2, activation='sigmoid')),
 
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Conv2D(64, kernel_size=(4, 4), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+                                #
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Conv2D(16, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+                                #
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+                                #
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(128, activation='tanh'),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+                                #
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(128, activation='tanh'),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+                                #
+                                # (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
+                                #         data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2),  data_format="channels_first"),
+                                #  Conv2D(16, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
+                                #  MaxPool2D((2, 2), data_format="channels_first"),
+                                #  Flatten(),
+                                #  Dense(128, activation='tanh'),
+                                #  Dense(8 * 8 * 2, activation='sigmoid')),
+
+                                (Conv2D(64, kernel_size=(2, 2), activation='sigmoid', input_shape=(12, 8, 8),
                                         data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
+                                 MaxPool2D((2, 2),  data_format="channels_first"),
                                  Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(16, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(128, activation='tanh'),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(64, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(128, activation='tanh'),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(16, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
-                                 Flatten(),
-                                 Dense(128, activation='tanh'),
-                                 Dense(8 * 8 * 2, activation='sigmoid')),
-
-                                (Conv2D(64, kernel_size=(4, 4), activation='sigmoid', input_shape=(12, 8, 8),
-                                        data_format="channels_first"),
-                                 # MaxPool2D((4, 4),  data_format="channels_first"),
-                                 Conv2D(32, kernel_size=(2, 2), activation='sigmoid', data_format="channels_first"),
-                                 # MaxPool2D((4, 4), data_format="channels_first"),
+                                 MaxPool2D((2, 2), data_format="channels_first"),
                                  Flatten(),
                                  Dense(128, activation='tanh'),
                                  Dense(8 * 8 * 2, activation='sigmoid'))
@@ -147,6 +147,9 @@ def main():
         model.save(f"{current_time}.keras")
 
         loss, accuracy = model.evaluate(x_test, y_test)
+
+        with open("log.txt", "a") as f:
+            f.write(f"{i},{current_time},{loss},{accuracy}\n")
 
         predictions = model.predict(x_test)
 

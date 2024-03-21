@@ -12,10 +12,10 @@ def rescale_y(y):
 
 def main():
 
-    x_train = np.load("x_train2.npy")
-    y_train = rescale_y(np.load("y_train2.npy"))
-    x_test = np.load("x_test2.npy")
-    y_test = rescale_y(np.load("y_test2.npy"))
+    x_train = np.load("../../data/x_train2.npy")
+    y_train = rescale_y(np.load("../../data/y_train2.npy"))
+    x_test = np.load("../../data/x_test2.npy")
+    y_test = rescale_y(np.load("../../data/y_test2.npy"))
 
     print("shapes: ")
     print("x_train", x_train.shape)
@@ -41,6 +41,8 @@ def main():
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
         model.save(f"value_nn_{current_time}.keras")
         loss = model.evaluate(x_test, y_test)
+        with open("log.txt", "a") as f:
+            f.write(f"{i},{current_time},{loss}\n")
         print("test_loss", loss)
 
 
